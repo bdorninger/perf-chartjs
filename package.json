@@ -1,0 +1,9 @@
+{
+  "name": "typescript",
+  "version": "0.0.0",
+  "private": true,
+  "dependencies": {
+    "@kurkle/color": "^0.1.9",
+    "chart.js": "^3.6.2"
+  }
+}

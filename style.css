@@ -1,0 +1,16 @@
+#myChart {
+  max-width: 800px;
+  max-height: 600px;
+  margin: 10px;
+  padding: 10px;
+  background-color: rgb(240, 240, 240);
+}
+
+button {
+  background-color: white;
+}
+
+.inputs {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
