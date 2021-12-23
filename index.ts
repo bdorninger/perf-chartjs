@@ -4,10 +4,11 @@
 import colorLib from '@kurkle/color';
 import Chart from 'chart.js/auto';
 import { ChartData } from './chart-data';
+import { ChartJSWrapper } from './chart-wrapper';
 import { createDataset, getChartConfig } from './chartjs-config';
 import './style.css';
 
-let fillInterval = 500;
+let fillInterval = 100;
 let x = 0;
 let paintJobHandle = undefined;
 let allChartData: ChartData[] = [];
@@ -16,7 +17,7 @@ const ctx = (
   document.getElementById('myChart') as HTMLCanvasElement
 ).getContext('2d');
 
-const chart = new Chart(ctx, getChartConfig()); // data.points
+const chart = ChartJSWrapper.makeChart(ctx, getChartConfig()); // data.points
 
 const interval = document.getElementById('xInterval') as HTMLInputElement;
 interval.valueAsNumber = fillInterval;
@@ -43,9 +44,10 @@ addBt.addEventListener('click', (ev) => {
       Math.random() * 255,
     ]).rgbString()
   );
-  chart.data.datasets.push(newDataset);
+
+  chart.addDataset(newDataset);
   allChartData.push(data);
-  console.log(`Added set ${chart.data.datasets.length}`);
+  console.log(`Added set ${chart.numberOfDatasets}`);
 });
 
 const startBt = document.getElementById('btStart') as HTMLButtonElement;
@@ -73,8 +75,8 @@ stopBt.addEventListener('click', (ev) => {
 const clearBt = document.getElementById('btClear') as HTMLButtonElement;
 clearBt.addEventListener('click', (ev) => {
   allChartData = [];
-  chart.data.datasets = [];
-  chart.update();
+  chart.clearDatasets();
+  chart.updateChart();
 });
 
 function fillContinuously() {
@@ -85,10 +87,10 @@ function fillContinuously() {
     allChartData.forEach((cd, i) => {
       const y = Math.abs(15 * Math.sin(Math.PI * (x + i * 0.1)) + yoffs);
       cd.addPoint({ x: x, y: y });
-      chart.data.datasets[i].data = [...cd.points];
+      chart.setDatasetData(i, cd);
     });
     x = x + gap;
-    chart.update();
+    chart.updateChart();
   }, fillInterval);
   return hdl;
 }
