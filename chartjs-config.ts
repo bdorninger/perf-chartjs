@@ -1,25 +1,34 @@
-import { ChartConfiguration, ChartEvent, Point } from 'chart.js/auto';
-import colorLib from '@kurkle/color';
+import {
+  ChartConfiguration,
+  ChartDataset,
+  ChartEvent,
+  Point,
+} from 'chart.js/auto';
+import { ChartData } from './chart-data';
 
-export function getChartConfig(data: Point[]): ChartConfiguration {
+export function createDataset(
+  chartData: ChartData,
+  color?: string
+): ChartDataset {
+  return {
+    data: chartData.points,
+    borderWidth: 2,
+    borderColor: color ?? '#ff0016',
+    hidden: false,
+    fill: false,
+    radius: 0,
+    tension: 0,
+    animation: false,
+  };
+}
+
+export function getChartConfig(
+  ...dataSets: ChartDataset[]
+): ChartConfiguration {
   return {
     type: 'line',
     data: {
-      // labels: ['P1', 'P2', 'P3', 'P4', 'P5', 'P6'],
-      datasets: [
-        {
-          label: '  Temperature',
-          data: data,
-          borderWidth: 2,
-          borderColor: '#ff0016',
-          backgroundColor: '#00ffee',
-          hidden: false,
-          fill: false,
-          radius: 0,
-          tension: 0,
-          animation: false
-        },
-      ],
+      datasets: dataSets,
     },
     options: {
       scales: {
@@ -48,6 +57,8 @@ export function getChartConfig(data: Point[]): ChartConfiguration {
             stepSize: 1,
             color: 'green',
             format: { maximumSignificantDigits: 2 },
+            major: { enabled: true },
+            autoSkip: false,
           },
           bounds: 'data',
         },

@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
   <body>
-    <canvas id="myChart" class="chart" width="800" height="600"></canvas>
+    <canvas id="myChart" class="chart"></canvas>
     <div class="inputs">
       <label for="xInterval">Interval</label>
       <input id="xInterval" type="number" min="10" max="1000" />
       <label>ms</label>
+      <button id="btAdd">Add</button>
+      <button id="btClear">Clear</button>
     </div>
     <div class="inputs">
       <button id="btStart">Start</button>
-      <button id="btStop">Stop</button>
+      <button disabled="true" id="btStop">Stop</button>
     </div>
   </body>
 </html>
