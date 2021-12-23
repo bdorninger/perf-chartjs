@@ -1,4 +1,4 @@
-export class ChartData<PT> {
+export class ChartData<PT = unknown> {
   private _points: PT[] = [];
 
   public get points(): PT[] {
