@@ -11,7 +11,7 @@ import './style.css';
 let fillInterval = 100;
 let x = 0;
 let paintJobHandle = undefined;
-let allChartData: ChartData[] = [];
+let allChartData: ChartData<any>[] = [];
 
 const ctx = (
   document.getElementById('myChart') as HTMLCanvasElement

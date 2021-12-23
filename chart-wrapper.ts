@@ -3,24 +3,25 @@ import Chart, {
   BubbleDataPoint,
   ChartDataset,
   ChartTypeRegistry,
+  Point,
   ScatterDataPoint,
 } from 'chart.js/auto';
 import { ChartData } from './chart-data';
 
-export interface ChartWrapper<CT, DST, CFT> {
+export interface ChartWrapper<CT, DST, PT> {
   readonly numberOfDatasets: number;
   readonly chart: CT;
   addDataset(dataset: DST): number;
   clearDatasets(): void;
   updateChart(): void;
-  setDatasetData(datasetIndex: number, data: ChartData): void;
+  setDatasetData(datasetIndex: number, data: ChartData<PT>): void;
 }
 
 /**
  *
  */
 export class ChartJSWrapper
-  implements ChartWrapper<Chart, ChartDataset, ChartConfiguration>
+  implements ChartWrapper<Chart, ChartDataset, Point>
 {
   public static makeChart(
     ctx: CanvasRenderingContext2D,
@@ -54,7 +55,7 @@ export class ChartJSWrapper
     this.chart.update();
   }
 
-  public setDatasetData(datasetIndex: number, data: ChartData) {
+  public setDatasetData(datasetIndex: number, data: ChartData<Point>) {
     this.chart.data.datasets[datasetIndex].data = [...data.points];
   }
 }

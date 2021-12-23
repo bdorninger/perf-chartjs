@@ -1,13 +1,11 @@
-import { Point } from 'chart.js/auto';
+export class ChartData<PT> {
+  private _points: PT[] = [];
 
-export class ChartData {
-  private _points: Point[] = [];
-
-  public get points(): Point[] {
+  public get points(): PT[] {
     return this._points;
   }
 
-  public addPoint(p: Point) {
+  public addPoint(p: PT) {
     this._points.push(p);
     if (this._points.length > 50) {
       this._points.shift();
