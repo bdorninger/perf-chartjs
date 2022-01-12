@@ -1,11 +1,7 @@
 // Import stylesheets
 
-// import color from '@kurkle/color';
-import colorLib from '@kurkle/color';
-import Chart, { Point } from 'chart.js/auto';
 import { ChartData } from './chart-data';
-import { ChartJSWrapper } from './chart-wrapper';
-import { createDataset, getChartConfig } from './chartjs-config';
+import { makeChart } from './chart-wrapper';
 import './style.css';
 
 let fillInterval = 100;
@@ -17,17 +13,14 @@ const ctx = (
   document.getElementById('myChart') as HTMLCanvasElement
 ).getContext('2d');
 
-const chart = ChartJSWrapper.makeChart(ctx, getChartConfig()); // data.points
+const chart = makeChart('chartjs', ctx);
 
 const interval = document.getElementById('xInterval') as HTMLInputElement;
 interval.valueAsNumber = fillInterval;
 
 interval.addEventListener('change', (ev) => {
   ev.preventDefault();
-
   const val = (ev.target as HTMLInputElement).valueAsNumber;
-  console.log(`interval changed to ${val}`);
-
   if (!isNaN(val)) {
     fillInterval = val;
   }
@@ -36,20 +29,9 @@ interval.addEventListener('change', (ev) => {
 const addBt = document.getElementById('btAdd') as HTMLButtonElement;
 
 addBt.addEventListener('click', (ev) => {
-  const data = new ChartData<Point>();
-  const newDataset = createDataset(
-    data,
-    colorLib([
-      Math.random() * 255,
-      Math.random() * 255,
-      Math.random() * 255,
-    ]).rgbString()
-  );
-
-  chart.addDataset(newDataset);
-  allChartData.push(data);
+  const hdl = chart.getAddDataSetHandler(allChartData);
+  hdl(ev);
   updateDatasetnumber();
-  console.log(`Added set ${chart.numberOfDatasets}`);
 });
 
 const startBt = document.getElementById('btStart') as HTMLButtonElement;

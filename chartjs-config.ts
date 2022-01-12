@@ -1,15 +1,18 @@
-import {
+import Chart, {
   ChartConfiguration,
   ChartDataset,
   ChartEvent,
   Point,
 } from 'chart.js/auto';
 import { ChartData } from './chart-data';
+import colorLib from '@kurkle/color';
 
-export function createDataset(
-  chartData: ChartData<Point>,
-  color?: string
-): ChartDataset {
+export function createDataset(chartData: ChartData<Point>): ChartDataset {
+  const color = colorLib([
+    Math.random() * 255,
+    Math.random() * 255,
+    Math.random() * 255,
+  ]).rgbString();
   return {
     data: chartData.points,
     borderWidth: 2,

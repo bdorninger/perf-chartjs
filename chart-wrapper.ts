@@ -7,6 +7,7 @@ import Chart, {
   ScatterDataPoint,
 } from 'chart.js/auto';
 import { ChartData } from './chart-data';
+import { createDataset, getChartConfig } from './chartjs-config';
 
 export interface ChartWrapper<CT, DST, PT> {
   readonly numberOfDatasets: number;
@@ -15,6 +16,16 @@ export interface ChartWrapper<CT, DST, PT> {
   clearDatasets(): void;
   updateChart(): void;
   setDatasetData(datasetIndex: number, data: ChartData<PT>): void;
+  getAddDataSetHandler(allChartsData: ChartData<PT>[]): (ev: MouseEvent) => any;
+}
+
+export function makeChart(
+  type: 'chartjs' | 'echarts',
+  ctx: CanvasRenderingContext2D  
+): ChartWrapper<any, any, any> | undefined {
+  return type === 'chartjs'
+    ? ChartJSWrapper.makeChart(ctx, getChartConfig())
+    : undefined;
 }
 
 /**
@@ -39,6 +50,18 @@ export class ChartJSWrapper
     >
   ) {
     //
+  }
+
+  public getAddDataSetHandler(allChartData: ChartData[]) {
+    const wrapper = this;
+    return (ev: MouseEvent) => {
+      const data = new ChartData<Point>();
+      const newDataset = createDataset(data);
+
+      this.addDataset(newDataset);
+      allChartData.push(data);
+      console.log(`Added set ${wrapper.numberOfDatasets}`);
+    };
   }
 
   public get numberOfDatasets(): number {
