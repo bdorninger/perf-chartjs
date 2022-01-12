@@ -1,6 +1,12 @@
+.chart-hidden {
+  visibility: hidden;
+}
+
 #myChart {
   max-width: 800px;
   max-height: 600px;
+  width: 800px;
+  height: 600px;
   margin: 10px;
   padding: 10px;
   background-color: rgb(240, 240, 240);

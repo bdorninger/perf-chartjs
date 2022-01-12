@@ -15,13 +15,14 @@ export interface ChartWrapper<CT, DST, PT> {
   addDataset(dataset: DST): number;
   clearDatasets(): void;
   updateChart(): void;
+  destroy(): void;
   setDatasetData(datasetIndex: number, data: ChartData<PT>): void;
   getAddDataSetHandler(allChartsData: ChartData<PT>[]): (ev: MouseEvent) => any;
 }
 
 export function makeChart(
   type: 'chartjs' | 'echarts',
-  ctx: CanvasRenderingContext2D  
+  ctx: CanvasRenderingContext2D
 ): ChartWrapper<any, any, any> | undefined {
   return type === 'chartjs'
     ? ChartJSWrapper.makeChart(ctx, getChartConfig())
@@ -29,7 +30,7 @@ export function makeChart(
 }
 
 /**
- *
+ * CHART.JS wrapper
  */
 export class ChartJSWrapper
   implements ChartWrapper<Chart, ChartDataset, Point>
@@ -50,6 +51,10 @@ export class ChartJSWrapper
     >
   ) {
     //
+  }
+
+  public destroy(): void {
+    this.chart.destroy();
   }
 
   public getAddDataSetHandler(allChartData: ChartData[]) {

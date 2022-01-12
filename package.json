@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@kurkle/color": "^0.1.9",
-    "chart.js": "^3.6.2"
+    "chart.js": "^3.6.2",
+    "echarts": "^5.2.2"
   }
 }

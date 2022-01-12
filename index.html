@@ -1,18 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
   <body>
-    <canvas id="myChart" class="chart"></canvas>
-    <div class="inputs">
-      <label for="xInterval">Interval</label>
-      <input id="xInterval" type="number" min="10" max="1000" />
-      <label>ms</label>
-      <button id="btAdd">Add</button>
-      <button id="btClear">Clear</button>
-      <input disabled="true" id="numCurves" type="number" value="0" />
+    <div>
+      <label for="chartType">Choose a chartType:</label>
+      <select name="chartType" id="chartType">
+        <option value="chartjs">Chart.js</option>
+        <option value="echarts">Apache ECharts</option>
+      </select>
     </div>
-    <div class="inputs">
-      <button id="btStart">Start</button>
-      <button disabled="true" id="btStop">Stop</button>
+    <div id="chartSpace" class = "chart-hidden">
+      <canvas id="myChart" class="chart"></canvas>
+      <div class="inputs">
+        <label for="xInterval">Interval</label>
+        <input id="xInterval" type="number" min="10" max="1000" />
+        <label>ms</label>
+        <button id="btAdd">Add</button>
+        <button id="btClear">Clear</button>
+        <input disabled="true" id="numCurves" type="number" value="0" />
+      </div>
+      <div class="inputs">
+        <button id="btStart">Start</button>
+        <button disabled="true" id="btStop">Stop</button>
+      </div>
     </div>
   </body>
 </html>
