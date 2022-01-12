@@ -2,7 +2,7 @@
 
 // import color from '@kurkle/color';
 import colorLib from '@kurkle/color';
-import Chart from 'chart.js/auto';
+import Chart, { Point } from 'chart.js/auto';
 import { ChartData } from './chart-data';
 import { ChartJSWrapper } from './chart-wrapper';
 import { createDataset, getChartConfig } from './chartjs-config';
@@ -34,8 +34,9 @@ interval.addEventListener('change', (ev) => {
 });
 
 const addBt = document.getElementById('btAdd') as HTMLButtonElement;
+
 addBt.addEventListener('click', (ev) => {
-  const data = new ChartData();
+  const data = new ChartData<Point>();
   const newDataset = createDataset(
     data,
     colorLib([
@@ -47,6 +48,7 @@ addBt.addEventListener('click', (ev) => {
 
   chart.addDataset(newDataset);
   allChartData.push(data);
+  updateDatasetnumber();
   console.log(`Added set ${chart.numberOfDatasets}`);
 });
 
@@ -77,7 +79,13 @@ clearBt.addEventListener('click', (ev) => {
   allChartData = [];
   chart.clearDatasets();
   chart.updateChart();
+  updateDatasetnumber();
 });
+
+function updateDatasetnumber() {
+  const numCurves = document.getElementById('numCurves') as HTMLInputElement;
+  numCurves.valueAsNumber = chart.numberOfDatasets;
+}
 
 function fillContinuously() {
   const gap = 0.1;

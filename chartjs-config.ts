@@ -7,7 +7,7 @@ import {
 import { ChartData } from './chart-data';
 
 export function createDataset(
-  chartData: ChartData,
+  chartData: ChartData<Point>,
   color?: string
 ): ChartDataset {
   return {
@@ -56,7 +56,9 @@ export function getChartConfig(
           ticks: {
             stepSize: 1,
             color: 'green',
-            format: { maximumSignificantDigits: 2 },
+            callback: (tickValue, index, ticks) => {
+              return Number.parseInt(String(tickValue));
+            },
             major: { enabled: true },
             autoSkip: false,
           },

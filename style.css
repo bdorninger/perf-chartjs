@@ -6,6 +6,10 @@
   background-color: rgb(240, 240, 240);
 }
 
+#numCurves {
+  max-width: 50px;
+}
+
 button {
   background-color: white;
 }
