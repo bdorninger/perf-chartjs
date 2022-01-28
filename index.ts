@@ -30,7 +30,8 @@ function initialize(): ChartWrapper<any, any, any> {
   let x = 0;
   let paintJobHandle = undefined;
   let allChartData: ChartData<any>[] = [];
-  const chartWrapper = makeChart('chartjs', ctx);
+  console.log(chartSelect.value);
+  const chartWrapper = makeChart(chartSelect.value as any, ctx);
 
   const interval = document.getElementById('xInterval') as HTMLInputElement;
   interval.valueAsNumber = fillInterval;
