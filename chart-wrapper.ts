@@ -19,7 +19,9 @@ import {
 } from 'echarts/components';
 
 import { CanvasRenderer } from 'echarts/renderers';
-import { LineChart } from 'echarts/charts';
+import { LineChart, LineSeriesOption } from 'echarts/charts';
+import { SeriesModel } from 'echarts/core';
+import GlobalModel from 'echarts/types/src/model/Global';
 
 export interface ChartWrapper<CT, DST, PT> {
   readonly numberOfDatasets: number;
@@ -44,8 +46,11 @@ export function makeChart(
 export class EChartWrapper
   implements ChartWrapper<echarts.ECharts, number[][], number[]>
 {
-  numberOfDatasets: number;
-  chart: echarts.ECharts;
+  public get numberOfDatasets(): number {
+    return (this.chart as any).getModel().getSeriesCount();
+  }
+
+  public readonly chart: echarts.ECharts;
 
   public static makeChart(
     region: HTMLDivElement,
@@ -69,28 +74,66 @@ export class EChartWrapper
   }
 
   public addDataset(dataset: number[][]): number {
-    throw new Error('Method not implemented.');
+    const currentCount = this.numberOfDatasets + 1;
+    const opt: ECOption = {
+      series: {
+        id: currentCount.toString(),
+        data: dataset,
+        lineStyle: {
+          color: '#0f0',
+        },
+      },
+    };
+    return currentCount;
   }
 
   public clearDatasets(): void {
-    this.chart.setOption({});
-    throw new Error('Method not implemented.');
+    (this.chart as any).getModel().setSeries();
+    const opt: ECOption = {
+      series: {}, // empty series should remove all existing series
+    };
+    this.chart.setOption(opt);
   }
 
   public updateChart(): void {
-    throw new Error('Method not implemented.');
+    // echart has no explicit update
   }
 
   public destroy(): void {
-    throw new Error('Method not implemented.');
+    this.chart.dispose();
   }
-  setDatasetData(datasetIndex: number, data: ChartData<number[]>): void {
-    throw new Error('Method not implemented.');
+
+  public setDatasetData(datasetIndex: number, data: ChartData<number[]>): void {
+    const smodel: SeriesModel<any> = this.getChartModel().getSeriesByIndex(
+      datasetIndex
+    ) as unknown as SeriesModel<any>;
+    const opt: ECOption = {
+      series: [
+        {
+          id: smodel.id,
+          data: data.points,
+        },
+      ],
+    };
+    this.chart.setOption(opt);
   }
-  getAddDataSetHandler(
-    allChartsData: ChartData<number[]>[]
+
+  public getAddDataSetHandler(
+    allChartData: ChartData<number[]>[]
   ): (ev: MouseEvent) => any {
-    throw new Error('Method not implemented.');
+    const wrapper = this;
+    return (_ev: MouseEvent) => {
+      const data = new ChartData<number[]>();
+      const newDataset = data.points;
+
+      this.addDataset(newDataset);
+      allChartData.push(data);
+      console.log(`Added set ${wrapper.numberOfDatasets}`);
+    };
+  }
+
+  private getChartModel(): GlobalModel {
+    return (this.chart as any).getModel();
   }
 }
 
@@ -124,7 +167,7 @@ export class ChartJSWrapper
 
   public getAddDataSetHandler(allChartData: ChartData[]) {
     const wrapper = this;
-    return (ev: MouseEvent) => {
+    return (_ev: MouseEvent) => {
       const data = new ChartData<Point>();
       const newDataset = createDataset(data);
 
