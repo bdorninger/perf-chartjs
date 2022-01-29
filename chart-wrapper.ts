@@ -22,10 +22,10 @@ export interface ChartWrapper<CT, DST, PT> {
 
 export function makeChart(
   type: 'chartjs' | 'echarts',
-  ctx: CanvasRenderingContext2D
+  region: HTMLDivElement
 ): ChartWrapper<any, any, any> | undefined {
   return type === 'chartjs'
-    ? ChartJSWrapper.makeChart(ctx, getChartConfig())
+    ? ChartJSWrapper.makeChart(region, getChartConfig())
     : undefined;
 }
 
@@ -35,10 +35,10 @@ export function makeChart(
 export class ChartJSWrapper
   implements ChartWrapper<Chart, ChartDataset, Point>
 {
-  public static makeChart(
-    ctx: CanvasRenderingContext2D,
-    cfg: ChartConfiguration
-  ) {
+  public static makeChart(region: HTMLDivElement, cfg: ChartConfiguration) {
+    const canvas = document.createElement('canvas') as HTMLCanvasElement;
+    region.appendChild(canvas);
+    const ctx = canvas.getContext('2d');
     const chart = new Chart(ctx, cfg);
     return new ChartJSWrapper(chart);
   }

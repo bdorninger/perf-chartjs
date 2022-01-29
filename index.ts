@@ -5,9 +5,7 @@ import { ChartWrapper, makeChart } from './chart-wrapper';
 import './style.css';
 
 let cWrapper: ChartWrapper<any, any, any> | undefined;
-const ctx = (
-  document.getElementById('myChart') as HTMLCanvasElement
-).getContext('2d');
+const chartRegion = document.getElementById('chartRegion') as HTMLDivElement;
 
 const chartSelect = document.getElementById('chartType') as HTMLSelectElement;
 chartSelect.selectedIndex = -1;
@@ -31,7 +29,7 @@ function initialize(): ChartWrapper<any, any, any> {
   let paintJobHandle = undefined;
   let allChartData: ChartData<any>[] = [];
   console.log(chartSelect.value);
-  const chartWrapper = makeChart(chartSelect.value as any, ctx);
+  const chartWrapper = makeChart(chartSelect.value as any, chartRegion);
 
   const interval = document.getElementById('xInterval') as HTMLInputElement;
   interval.valueAsNumber = fillInterval;
