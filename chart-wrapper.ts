@@ -6,8 +6,20 @@ import Chart, {
   Point,
   ScatterDataPoint,
 } from 'chart.js/auto';
+import * as echarts from 'echarts/core';
 import { ChartData } from './chart-data';
 import { createDataset, getChartConfig } from './chartjs-config';
+import { ECOption, getEchartOptions } from './echart-config';
+
+import {
+  GridComponent,
+  // Dataset
+  DatasetComponent,
+  TransformComponent,
+} from 'echarts/components';
+
+import { CanvasRenderer } from 'echarts/renderers';
+import { LineChart } from 'echarts/charts';
 
 export interface ChartWrapper<CT, DST, PT> {
   readonly numberOfDatasets: number;
@@ -26,7 +38,60 @@ export function makeChart(
 ): ChartWrapper<any, any, any> | undefined {
   return type === 'chartjs'
     ? ChartJSWrapper.makeChart(region, getChartConfig())
-    : undefined;
+    : EChartWrapper.makeChart(region, getEchartOptions());
+}
+
+export class EChartWrapper
+  implements ChartWrapper<echarts.ECharts, number[][], number[]>
+{
+  numberOfDatasets: number;
+  chart: echarts.ECharts;
+
+  public static makeChart(
+    region: HTMLDivElement,
+    options: ECOption
+  ): EChartWrapper {
+    echarts.use([
+      GridComponent,
+      DatasetComponent,
+      TransformComponent,
+      LineChart,
+      CanvasRenderer,
+    ]);
+
+    const wrapper = new EChartWrapper(region);
+    wrapper.chart.setOption(options);
+    return wrapper;
+  }
+
+  constructor(region: HTMLDivElement) {
+    this.chart = echarts.init(region);
+  }
+
+  public addDataset(dataset: number[][]): number {
+    throw new Error('Method not implemented.');
+  }
+
+  public clearDatasets(): void {
+    this.chart.setOption({});
+    throw new Error('Method not implemented.');
+  }
+
+  public updateChart(): void {
+    throw new Error('Method not implemented.');
+  }
+
+  public destroy(): void {
+    throw new Error('Method not implemented.');
+  }
+  setDatasetData(datasetIndex: number, data: ChartData<number[]>): void {
+    throw new Error('Method not implemented.');
+  }
+  getAddDataSetHandler(
+    allChartsData: ChartData<number[]>[]
+  ): (ev: MouseEvent) => any {
+    throw new Error('Method not implemented.');
+  }
 }
 
 /**

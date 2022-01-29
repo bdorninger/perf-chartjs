@@ -1,21 +1,48 @@
+import {
+  DatasetComponentOption,
+  GridComponentOption,
+  LineSeriesOption,
+} from 'echarts';
+
+export type ECOption = echarts.ComposeOption<
+  LineSeriesOption | GridComponentOption | DatasetComponentOption
+>;
+
 // Specify the configuration items and data for the chart
-export const option = {
-  title: {
-    text: 'ECharts Getting Started Example'
-  },
-  tooltip: {},
-  legend: {
-    data: ['sales']
+export const option: ECOption = {
+  grid: {
+    top: '8%',
+    bottom: '12%',
   },
   xAxis: {
-    data: ['Shirts', 'Cardigans', 'Chiffons', 'Pants', 'Heels', 'Socks']
+    type: 'value',
+    axisTick: {
+      show: true,
+      interval: 'auto',
+    },
+    axisLine: { onZero: false },
   },
-  yAxis: {},
+  yAxis: {
+    min: 0,
+    max: 20,
+    type: 'value',
+    axisTick: {
+      show: true,
+      interval: 2,
+    },
+    axisLine: {},
+  },
   series: [
     {
-      name: 'sales', 
-      type: 'bar',
-      data: [5, 20, 36, 10, 10, 20]
-    }
-  ]
+      type: 'line',
+      animation: false,
+      smooth: false,
+      symbolSize: 10,
+      data: [],
+    },
+  ],
 };
+
+export function getEchartOptions(...datasets: number[][]): ECOption {
+  return {};
+}
