@@ -15,14 +15,17 @@ export const option: ECOption = {
     bottom: '12%',
   },
   xAxis: {
+    animation: false,
     type: 'value',
     axisTick: {
       show: true,
       interval: 'auto',
     },
     axisLine: { onZero: false },
+    scale: true,
   },
   yAxis: {
+    animation: false,
     min: 0,
     max: 20,
     type: 'value',
@@ -46,6 +49,14 @@ export const option: ECOption = {
     },
   ],*/
 };
+
+export function randomEchartColor(): string {
+  const r = parseInt((Math.random() * 255).toFixed(0)).toString(16);
+  const b = parseInt((Math.random() * 255).toFixed(0)).toString(16);
+  const g = parseInt((Math.random() * 255).toFixed(0)).toString(16);
+  const col = `#${r}${b}${g}`;
+  return col;
+}
 
 export function getEchartOptions(...datasets: number[][]): ECOption {
   return option;

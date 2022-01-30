@@ -9,7 +9,7 @@ import Chart, {
 import * as echarts from 'echarts/core';
 import { ChartData } from './chart-data';
 import { createDataset, getChartConfig } from './chartjs-config';
-import { ECOption, getEchartOptions } from './echart-config';
+import { ECOption, getEchartOptions, randomEchartColor } from './echart-config';
 
 import {
   GridComponent,
@@ -91,7 +91,7 @@ export class EChartWrapper
         type: 'line',
         data: dataset,
         lineStyle: {
-          color: '#0f0',
+          color: randomEchartColor(),
         },
       },
     };
@@ -115,14 +115,13 @@ export class EChartWrapper
     const smodel: SeriesModel<any> = this.getChartModel().getSeriesByIndex(
       datasetIndex
     ) as unknown as SeriesModel<any>;
-    console.log(``);
     const opt: ECOption = {
       series: [
         {
           animation: false,
           id: smodel.id,
-          name: smodel.name,
-          type: 'line',
+          // name: smodel.name,
+          // type: 'line',
           data: data.points,
         },
       ],
