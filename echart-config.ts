@@ -10,6 +10,7 @@ export type ECOption = echarts.ComposeOption<
 
 // Specify the configuration items and data for the chart
 export const option: ECOption = {
+  
   grid: {
     top: '8%',
     bottom: '12%',
@@ -17,11 +18,11 @@ export const option: ECOption = {
   xAxis: {
     animation: false,
     type: 'value',
+    interval: 0.5,
     axisTick: {
       show: true,
-      interval: 'auto',
     },
-    axisLine: { onZero: false },
+    axisLine: { onZero: true },
     scale: true,
   },
   yAxis: {
@@ -29,11 +30,8 @@ export const option: ECOption = {
     min: 0,
     max: 20,
     type: 'value',
-    axisTick: {
-      show: true,
-      interval: 2,
-    },
-    axisLine: {},
+    interval: 2,
+    axisLine: { onZero: true },
   },
   /*series: [
     {

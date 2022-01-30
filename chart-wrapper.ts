@@ -90,6 +90,7 @@ export class EChartWrapper
         name: currentCount.toString(),
         type: 'line',
         data: dataset,
+        animation: false,
         lineStyle: {
           color: randomEchartColor(),
         },
@@ -127,10 +128,10 @@ export class EChartWrapper
       ],
     };
 
-    console.log(
+    /*console.log(
       `Setting dpoints on index ${datasetIndex} with id/name ${smodel.id}/${smodel.name}`,
       data.points
-    );
+    );*/
     this.chart.setOption(opt);
     this.chart.getZr().refresh();
   }
