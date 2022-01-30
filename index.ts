@@ -92,7 +92,8 @@ function initialize(): ChartWrapper<any, any, any> {
     const hdl = setInterval(() => {
       allChartData.forEach((cd, i) => {
         const y = Math.abs(15 * Math.sin(Math.PI * (x + i * 0.1)) + yoffs);
-        cd.addPoint({ x: x, y: y });
+
+        cd.addPoint(chartWrapper.createPoint(x, y));
         chartWrapper.setDatasetData(i, cd);
       });
       x = x + gap;

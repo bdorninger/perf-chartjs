@@ -32,17 +32,21 @@ export const option: ECOption = {
     },
     axisLine: {},
   },
-  series: [
+  /*series: [
     {
       type: 'line',
       animation: false,
       smooth: false,
       symbolSize: 10,
-      data: [],
+      data: [
+        [3, 4],
+        [10, 16],
+        [11, 17],
+      ],
     },
-  ],
+  ],*/
 };
 
 export function getEchartOptions(...datasets: number[][]): ECOption {
-  return {};
+  return option;
 }

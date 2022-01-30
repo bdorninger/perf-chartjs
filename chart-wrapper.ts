@@ -32,6 +32,7 @@ export interface ChartWrapper<CT, DST, PT> {
   destroy(): void;
   setDatasetData(datasetIndex: number, data: ChartData<PT>): void;
   getAddDataSetHandler(allChartsData: ChartData<PT>[]): (ev: MouseEvent) => any;
+  createPoint(x: number, y: number): PT;
 }
 
 export function makeChart(
@@ -71,28 +72,35 @@ export class EChartWrapper
 
   constructor(region: HTMLDivElement) {
     this.chart = echarts.init(region);
+    this.chart.getZr().on('click', (e) => {
+      console.log(`click`, e, this.chart);
+    });
+  }
+
+  public createPoint(x: number, y: number): number[] {
+    return [x, y];
   }
 
   public addDataset(dataset: number[][]): number {
+    console.log(`Adding dataset: `, dataset);
     const currentCount = this.numberOfDatasets + 1;
     const opt: ECOption = {
       series: {
         id: currentCount.toString(),
+        name: currentCount.toString(),
+        type: 'line',
         data: dataset,
         lineStyle: {
           color: '#0f0',
         },
       },
     };
+    this.chart.setOption(opt);
     return currentCount;
   }
 
   public clearDatasets(): void {
-    (this.chart as any).getModel().setSeries();
-    const opt: ECOption = {
-      series: {}, // empty series should remove all existing series
-    };
-    this.chart.setOption(opt);
+    this.chart.setOption(getEchartOptions(), true);
   }
 
   public updateChart(): void {
@@ -107,15 +115,25 @@ export class EChartWrapper
     const smodel: SeriesModel<any> = this.getChartModel().getSeriesByIndex(
       datasetIndex
     ) as unknown as SeriesModel<any>;
+    console.log(``);
     const opt: ECOption = {
       series: [
         {
+          animation: false,
           id: smodel.id,
+          name: smodel.name,
+          type: 'line',
           data: data.points,
         },
       ],
     };
+
+    console.log(
+      `Setting dpoints on index ${datasetIndex} with id/name ${smodel.id}/${smodel.name}`,
+      data.points
+    );
     this.chart.setOption(opt);
+    this.chart.getZr().refresh();
   }
 
   public getAddDataSetHandler(
@@ -159,6 +177,10 @@ export class ChartJSWrapper
     >
   ) {
     //
+  }
+
+  public createPoint(x: number, y: number): Point {
+    return { x: x, y: y };
   }
 
   public destroy(): void {
