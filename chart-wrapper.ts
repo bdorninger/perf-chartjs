@@ -161,6 +161,7 @@ export class EChartWrapper
 export class ChartJSWrapper
   implements ChartWrapper<Chart, ChartDataset, Point>
 {
+  private updateRequested = false;
   public static makeChart(region: HTMLDivElement, cfg: ChartConfiguration) {
     const canvas = document.createElement('canvas') as HTMLCanvasElement;
     region.appendChild(canvas);
@@ -211,6 +212,19 @@ export class ChartJSWrapper
   }
   public updateChart() {
     this.chart.update();
+    /* if (this.updateRequested) {
+      return;
+    }
+    this.updateRequested = true;
+    const resetUpdateReq = this.resetUpdateRequested.bind(this);
+    requestAnimationFrame(() => {
+      this.chart.update();
+      resetUpdateReq();
+    });*/
+  }
+
+  private resetUpdateRequested() {
+    this.updateRequested = false;
   }
 
   public setDatasetData(datasetIndex: number, data: ChartData<Point>) {
